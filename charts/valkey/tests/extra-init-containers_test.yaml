@@ -1,0 +1,39 @@
+suite: test extraInitContainers
+templates:
+  - statefulset.yaml
+tests:
+  - it: should not render initContainers in standalone mode by default
+    set:
+      architecture: standalone
+    asserts:
+      - notExists:
+          path: spec.template.spec.initContainers
+
+  - it: should render extraInitContainers in standalone mode
+    set:
+      architecture: standalone
+      extraInitContainers:
+        - name: init-custom
+          image: busybox:1.37
+          command: ["sh", "-c", "echo init"]
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers
+          value:
+            - name: init-custom
+              image: busybox:1.37
+              command: ["sh", "-c", "echo init"]
+
+  - it: should render extraInitContainers before valkey-init in replication mode
+    set:
+      architecture: replication
+      extraInitContainers:
+        - name: init-custom
+          image: busybox:1.37
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: init-custom
+      - equal:
+          path: spec.template.spec.initContainers[1].name
+          value: valkey-init

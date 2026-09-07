@@ -39,8 +39,12 @@ spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
-      {{- if or (eq .Values.architecture "replication") .Values.externalReplica.enabled }}
+      {{- if or (eq .Values.architecture "replication") .Values.externalReplica.enabled .Values.extraInitContainers }}
       initContainers:
+        {{- with .Values.extraInitContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if or (eq .Values.architecture "replication") .Values.externalReplica.enabled }}
         - name: valkey-init
           image: {{ include "valkey.image" . }}
           securityContext: {{ include "cloudpirates.renderContainerSecurityContext" . | nindent 12 }}
@@ -234,6 +238,7 @@ spec:
               mountPath: {{ .Values.config.mountPath }}
             - name: valkey-config
               mountPath: /tmp/valkey
+        {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}

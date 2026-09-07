@@ -323,10 +323,11 @@ When `sentinel.masterProxy.enabled` is set, the `<release>-master` Service alway
 
 ### Additional Configuration
 
-| Parameter      | Description                                                             | Default |
-| -------------- | ----------------------------------------------------------------------- | ------- |
-| `extraEnvVars` | Additional environment variables to set                                 | `[]`    |
-| `extraObjects` | A list of additional Kubernetes objects to deploy alongside the release | `[]`    |
+| Parameter             | Description                                                             | Default |
+| --------------------- | ----------------------------------------------------------------------- | ------- |
+| `extraEnvVars`        | Additional environment variables to set                                 | `[]`    |
+| `extraInitContainers` | Additional init containers to add to the Valkey StatefulSet pods        | `[]`    |
+| `extraObjects`        | A list of additional Kubernetes objects to deploy alongside the release | `[]`    |
 
 #### Extra Objects
 

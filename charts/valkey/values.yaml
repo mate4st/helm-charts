@@ -340,6 +340,12 @@ hostAliases: []
   #     - "valkey-0"
   #     - "valkey-1"
 
+## @param extraInitContainers Additional init containers to add to the Valkey StatefulSet pods
+extraInitContainers: []
+  # - name: init-sysctl
+  #   image: busybox:1.37
+  #   command: ["sh", "-c", "echo init"]
+
 ## @param extraEnvVars Additional environment variables to set
 extraEnvVars: []
   # - name: CUSTOM_VAR
